@@ -1,6 +1,5 @@
 # Piedra, Papel o Tijeras por Secuencias (Haskell)
 
-![Banner](https://i.imgur.com/7xYk5nL.png)
 
 > **Programas Interactivos - Ejercicio g)**  
 > Variante estratégica del clásico *Piedra, Papel o Tijeras*, implementada en **Haskell** con entrada interactiva y secreta.
