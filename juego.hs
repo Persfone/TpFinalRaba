@@ -53,21 +53,28 @@ getSecretSequence player = do
       getSecretSequence player
 
 -- Lee letras una por una hasta que se presione ENTER solo
+-- Lee letras una por una: solo 1 carácter por línea
 getSequence :: String -> IO String
 getSequence current = do
-  putStr $ "Secuencia actual: " ++ showCurrent current ++ " (letra o ENTER para terminar): "
+  putStr $ "Secuencia actual: " ++ showCurrent current ++ " (1 letra o ENTER para terminar): "
   hFlush stdout
   input <- getLine
-  let trimmed = filter (/= ' ') input
-  if null trimmed
-    then return current
+  let trimmed = filter (/= ' ') input  -- quita espacios
+
+  if null trimmed then
+    return current  -- ENTER vacío → termina
+
+  else if length trimmed > 1 then do
+    putStrLn "¡Error! Solo se permite 1 letra por línea."
+    getSequence current  -- repite
+
+  else do
+    let char = toUpper (head trimmed)
+    if char `elem` ['R', 'P', 'S'] then
+      getSequence (current ++ [char])
     else do
-      let char = toUpper (head trimmed)
-      if char `elem` ['R','P','S']
-        then getSequence (current ++ [char])
-        else do
-          putStrLn "Letra inválida. Use solo R, P o S."
-          getSequence current
+      putStrLn "¡Letra inválida! Use solo R, P o S."
+      getSequence current
 
 -- Muestra la secuencia actual ocultando las letras ya ingresadas
 showCurrent :: String -> String
