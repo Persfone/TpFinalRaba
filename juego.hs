@@ -11,7 +11,7 @@ main = menuPrincipal
 menuPrincipal :: IO ()
 menuPrincipal = do
   putStrLn "\n╔════════════════════════════════════════╗"
-  putStrLn "║  PIEDRA, PAPEL O TIJERAS (Secuencias) ║"
+  putStrLn "║  PIEDRA, PAPEL O TIJERAS (Secuencias)  ║"
   putStrLn "╚════════════════════════════════════════╝"
   putStrLn "1. Jugar"
   putStrLn "2. Ver historial de partidas"
