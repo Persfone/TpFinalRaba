@@ -1,10 +1,9 @@
 import System.IO (hFlush, stdout)
+import System.Console.ANSI
 
--- Funcion principal
 main :: IO ()
 main = menuPrincipal
 
--- Convierte un caracter a mayuscula (sin Data.Char)
 toUpperChar :: Char -> Char
 toUpperChar c
   | c == 'r' = 'R'
@@ -12,11 +11,7 @@ toUpperChar c
   | c == 's' = 'S'
   | otherwise = c
 
--- Limpia la pantalla (lineas en blanco)
-clearScreen :: IO ()
-clearScreen = putStr "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 
--- Menu principal
 menuPrincipal :: IO ()
 menuPrincipal = do
   clearScreen
@@ -37,7 +32,6 @@ menuPrincipal = do
       putStrLn "Opcion invalida. Intente nuevamente."
       esperarTecla >> menuPrincipal
 
--- Inicia un nuevo juego
 iniciarJuego :: IO ()
 iniciarJuego = do
   clearScreen
@@ -45,7 +39,6 @@ iniciarJuego = do
   n <- getNumeroPartidas
   playGames n n 0 0
 
--- Obtiene la cantidad de partidas
 getNumeroPartidas :: IO Int
 getNumeroPartidas = do
   putStr "Ingrese la cantidad de partidas a jugar: "
@@ -61,7 +54,6 @@ getNumeroPartidas = do
       putStrLn "Error: debe ingresar un numero entero positivo."
       getNumeroPartidas
 
--- Juega n partidas
 playGames :: Int -> Int -> Int -> Int -> IO ()
 playGames 0 totalGames score1 score2 = do
   clearScreen
@@ -98,7 +90,6 @@ playGames n totalGames score1 score2 = do
   esperarTecla
   playGames (n-1) totalGames newScore1 newScore2
 
--- Obtiene secuencia de un jugador (solo R, P, S en mayusculas)
 getSecretSequence :: Int -> IO String
 getSecretSequence player = do
   clearScreen
@@ -118,7 +109,6 @@ getSecretSequence player = do
     esperarTecla
     getSecretSequence player
 
--- Lee las letras una a una hasta que se presione ENTER
 getSequence :: String -> IO String
 getSequence current = do
   putStr ("Secuencia actual: " ++ showCurrent current ++ " (1 letra o ENTER para terminar): ")
@@ -136,16 +126,13 @@ getSequence current = do
     putStrLn "Letra invalida! Use solo R, P o S."
     getSequence current
 
--- Oculta las letras ingresadas
 showCurrent :: String -> String
 showCurrent [] = ""
 showCurrent xs = unwords (map (const "*") xs)
 
--- Verifica que solo haya R, P o S
 validSequence :: String -> Bool
 validSequence = all (`elem` ['R','P','S'])
 
--- Calcula el resultado de cada ronda
 countWins :: String -> String -> (Int, Int)
 countWins [] [] = (0, 0)
 countWins (x:xs) (y:ys) = case winner x y of
@@ -155,7 +142,6 @@ countWins (x:xs) (y:ys) = case winner x y of
   where (w1, w2) = countWins xs ys
 countWins _ _ = (0, 0)
 
--- Determina el ganador de una jugada
 winner :: Char -> Char -> Int
 winner 'R' 'S' = 1
 winner 'S' 'R' = 2
@@ -165,20 +151,17 @@ winner 'S' 'P' = 1
 winner 'P' 'S' = 2
 winner _   _   = 0
 
--- Espera una tecla para continuar
 esperarTecla :: IO ()
 esperarTecla = do
   _ <- getLine
   return ()
 
--- Vuelve al menu principal
 volverAlMenu :: IO ()
 volverAlMenu = do
   putStrLn "\nPresione ENTER para volver al menu..."
   esperarTecla
   menuPrincipal
 
--- Muestra las reglas del juego
 mostrarReglas :: IO ()
 mostrarReglas = do
   clearScreen
@@ -196,4 +179,3 @@ mostrarReglas = do
   putStrLn "  * Papel vence a Roca"
   putStrLn "  * Tijeras vence a Papel"
   putStrLn "- Gana quien tenga mas puntos al final."
-
