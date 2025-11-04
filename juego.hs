@@ -4,6 +4,14 @@ import System.IO (hFlush, stdout)
 main :: IO ()
 main = menuPrincipal
 
+-- Convierte un caracter a mayuscula (sin Data.Char)
+toUpperChar :: Char -> Char
+toUpperChar c
+  | c == 'r' = 'R'
+  | c == 'p' = 'P'
+  | c == 's' = 'S'
+  | otherwise = c
+
 -- Limpia la pantalla (lineas en blanco)
 clearScreen :: IO ()
 clearScreen = putStr "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
@@ -122,8 +130,8 @@ getSequence current = do
   else if length trimmed > 1 then do
     putStrLn "Error! Solo una letra por vez."
     getSequence current
-  else if head trimmed `elem` ['R', 'P', 'S'] then
-    getSequence (current ++ trimmed)
+  else if toUpperChar (head trimmed) `elem` ['R', 'P', 'S'] then
+    getSequence (current ++ [toUpperChar (head trimmed)])
   else do
     putStrLn "Letra invalida! Use solo R, P o S."
     getSequence current
@@ -188,3 +196,4 @@ mostrarReglas = do
   putStrLn "  * Papel vence a Roca"
   putStrLn "  * Tijeras vence a Papel"
   putStrLn "- Gana quien tenga mas puntos al final."
+
